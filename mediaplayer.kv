@@ -1,0 +1,91 @@
+<MediaPlayer>:
+    orientation: "vertical"
+    padding: dp(10)
+    spacing: dp(10)
+
+    canvas.before:
+        Color:
+            rgba: 0.07, 0.1, 0.15, 1  # Navy blue background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    RecycleView:
+        id: song_list
+        viewclass: 'Button'
+        bar_width: dp(10)
+        bar_color: 1, 0.8, 0, 1  # Gold scrollbar
+        do_scroll_x: False
+        do_scroll_y: True
+        scroll_y: 1
+        size_hint_y: 0.5  # Adjusted size for better visibility
+        RecycleBoxLayout:
+            default_size: None, dp(50)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: None
+        height: dp(70)
+
+        Label:
+            id: metadata_label
+            text: "No Song Selected"
+            font_size: sp(18)
+            bold: True
+            halign: "center"
+            valign: "middle"
+            color: 0.9, 0.9, 0.9, 1
+            text_size: self.size  # Ensure text wraps properly
+
+    Slider:
+        id: seekbar
+        min: 0
+        max: 0
+        value: 0
+        size_hint_y: None
+        height: dp(50)
+        cursor_width: dp(15)
+        cursor_size: [dp(25), dp(25)]
+        background_width: dp(8)
+        cursor_color: 1, 0.8, 0, 1  # Gold cursor
+        on_touch_up: root.resume_at_seekbar(*args)
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: None
+        height: dp(70)
+        spacing: dp(15)
+
+        Button:
+            id: prev_button
+            text: "⏮ Previous"
+            font_size: sp(16)
+            bold: True
+            background_color: 1, 1, 1, 1  # White background
+            color: 0.2, 0.6, 0.8, 1  # Aqua blue text
+            size_hint_x: 0.3
+            on_press: root.prev_song()
+
+        Button:
+            id: play_pause_button
+            text: "⏯ Play"
+            font_size: sp(16)
+            bold: True
+            background_color: 1, 1, 1, 1  # White background
+            color: 0.3, 0.7, 0.2, 1  # Green text
+            size_hint_x: 0.4
+            on_press: root.play_pause_song()
+
+        Button:
+            id: next_button
+            text: "⏭ Next"
+            font_size: sp(16)
+            bold: True
+            background_color: 1, 1, 1, 1  # White background
+            color: 0.8, 0.2, 0.2, 1  # Red text
+            size_hint_x: 0.3
+            on_press: root.next_song()
