@@ -1,0 +1,38 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential libffi-dev python3-dev openjdk-11-jdk git zip
+        pip install --upgrade pip
+        pip install cython buildozer
+
+    - name: Build APK
+      run: |
+        buildozer init
+        sed -i 's/requirements = python3/requirements = kivy,pygame,pyjnius,mutagen/' buildozer.spec
+        buildozer -v android debug
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: APK
+        path: bin/*.apk
